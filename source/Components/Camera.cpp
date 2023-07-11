@@ -3,13 +3,16 @@
 
 Camera::Camera() : Camera::Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f)) {}
 
-Camera::Camera(glm::vec3 position, glm::vec3 target) {
+Camera::Camera(glm::vec3 position, glm::vec3 target, float viewportWidth, float viewportHeight) {
     cam_position = position;
     cam_target = target;
 
     cam_forward = glm::normalize(cam_position - cam_target);
     cam_right = glm::normalize(glm::cross(cam_forward, Constants::UP));
     cam_up = glm::normalize(glm::cross(cam_right, cam_forward));
+
+    viewport_width = viewportWidth;
+    viewport_height = viewportHeight;
 
     UpdateView();
     UpdateProjection();
@@ -20,7 +23,7 @@ void Camera::OneAxisMove(Camera::Movement movement, float amount) {
 
     switch (movement) {
         case UP:
-            delta = amount * speed * cam_up; //up because we are in a 2D view of sorts
+            delta = amount * speed * cam_up;
             break;
         case DOWN:
             delta = -amount * speed * cam_up;
@@ -41,10 +44,6 @@ void Camera::OneAxisMove(Camera::Movement movement, float amount) {
 
     cam_target += delta;
     cam_position += delta;
-
-    cam_position.z = glm::clamp(cam_position.z, 0.0f, Camera::FAR_PLANE);
-    cam_target.z = glm::clamp(cam_target.z, cam_position.z - 1.0f,
-                              Camera::FAR_PLANE); //the target distance from the camera, does not matter in a 2D context
 
     UpdateView();
 }

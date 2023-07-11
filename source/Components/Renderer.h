@@ -18,13 +18,16 @@ private:
     std::unique_ptr<VisualGrid> main_grid;
 
 public:
-    Renderer(uint16_t initialWidth, uint16_t initialHeight, GLFWwindow* associatedWindow = nullptr);
+    Renderer(GLFWwindow* associatedWindow, uint16_t initialWidth, uint16_t initialHeight);
     ~Renderer();
 
-    static std::shared_ptr<Renderer> CreateRenderer(uint16_t initialWidth, uint16_t initialHeight, GLFWwindow* associatedWindow);
+    static std::shared_ptr<Renderer> CreateRenderer(GLFWwindow* associatedWindow, uint16_t initialWidth, uint16_t initialHeight);
     static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 
-    void Render();
-    void KeyCallbackLocal(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void Render(GLFWwindow* window, double deltaTime);
+    void ResizeCallback(GLFWwindow* window, int displayWidth, int displayHeight);
+
+private:
+    void InputCallbackLocal(GLFWwindow* window, double deltaTime);
 };
 

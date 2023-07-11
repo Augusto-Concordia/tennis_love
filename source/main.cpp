@@ -8,13 +8,18 @@ int main() {
     std::cout << "Starting..." << std::endl;
 
     const uint16_t INITIAL_WIDTH = 1024;
-    const uint16_t INITIAL_HEIGHT = 768;
+    const uint16_t INITIAL_HEIGHT = 1000;
 
     //initialize GL context
     if (!glfwInit()) {
         fprintf(stderr, "ERROR -> Could not start GLFW\n");
         return 1;
     }
+
+    //establish window hints
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //initialize OS window with GLFW
     GLFWwindow* window = glfwCreateWindow(INITIAL_WIDTH, INITIAL_HEIGHT, "Tennis Love", nullptr, nullptr);
@@ -43,26 +48,40 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    std::shared_ptr<Renderer> main_renderer = Renderer::CreateRenderer(INITIAL_WIDTH, INITIAL_HEIGHT, window);
+    std::shared_ptr<Renderer> main_renderer = Renderer::CreateRenderer(window, INITIAL_WIDTH, INITIAL_HEIGHT);
 
-    glfwSetKeyCallback(window, Renderer::KeyCallback);
+    //unused because it doesn't provide smooth movement
+    //glfwSetKeyCallback(window, Renderer::KeyCallback);
+
+    int display_w, display_h, previous_display_w, previous_display_h;
+    double previous_time = glfwGetTime();
 
     while (!glfwWindowShouldClose(window)) {
+        //clears the canvas to black
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        //get current display window size & update rendering
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        if (previous_display_w != display_w || previous_display_h != display_h)
+        {
+            previous_display_w = display_w;
+            previous_display_h = display_h;
+
+            glViewport(0, 0, display_w, display_h);
+
+            main_renderer->ResizeCallback(window, display_w, display_h);
+        }
+
+        main_renderer->Render(window, glfwGetTime() - previous_time);
+
+        //stores current time for next frame
+        previous_time = glfwGetTime();
+
         //watch for input events
         glfwPollEvents();
 
-        //get current display window size
-        int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
-        glViewport(0, 0, display_w, display_h);
-
-        main_renderer->Render();
-
         //swap buffers and prepare for next frame
         glfwSwapBuffers(window);
-
-        //clears the canvas to black
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     std::cout << "Closing..." << std::endl;

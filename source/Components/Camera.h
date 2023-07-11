@@ -26,7 +26,7 @@ public:
 public:
     Camera();
 
-    Camera(glm::vec3 position, glm::vec3 target);
+    Camera(glm::vec3 position, glm::vec3 target, float viewportWidth = 1280, float viewportHeight = 720);
 
     void OneAxisMove(Movement movement, float delta);
 
@@ -47,8 +47,8 @@ private:
     glm::vec3 cam_right;
     glm::vec3 cam_forward;
 
-    float viewport_height = 1080;
-    float viewport_width = 1920;
+    float viewport_height;
+    float viewport_width;
 
     glm::mat4 view_matrix = glm::mat4(1.0f);
     glm::mat4 projection_matrix = glm::mat4(1.0f);
