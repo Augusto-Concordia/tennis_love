@@ -6,7 +6,7 @@ std::unordered_map<GLFWwindow*, std::shared_ptr<Renderer>> Renderer::instances;
 Renderer::Renderer(GLFWwindow* _associatedWindow, int _initialWidth, int _initialHeight) {
     associated_window = _associatedWindow;
 
-    main_camera = std::make_unique<Camera>(glm::vec3(15.0f, 15.0f, 13.0f), glm::vec3(1.0f), _initialWidth, _initialHeight);
+    main_camera = std::make_unique<Camera>(glm::vec3(10.0f, 10.0f, 13.0f), glm::vec3(1.0f), _initialWidth, _initialHeight);
 
     default_shader = Shader::Library::CreateShader("shaders/default.vert", "shaders/default.frag");
 
@@ -17,6 +17,9 @@ Renderer::Renderer(GLFWwindow* _associatedWindow, int _initialWidth, int _initia
     main_x_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(5.0f, 0.0f, 0.0f), 3.0f, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
     main_y_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(0.0f, 5.0f, 0.0f), 3.0f, glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
     main_z_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 5.0f), 3.0f, glm::vec3(0.0f, 0.0f, 1.0f), 1.0f);
+
+    //objects
+    test_cube = std::make_unique<VisualCube>(glm::vec3(0.0f, 0.0f, 1.0f));
 }
 
 Renderer::~Renderer() {
@@ -36,13 +39,19 @@ void Renderer::Render(GLFWwindow* _window, const double _deltaTime) {
     //draws the main grid
     main_grid->Draw(main_camera->GetViewProjection());
 
-    //clears the depth buffer to allow the axis to always be drawn on top
+    //clears the depth buffer to allow the axis to always be drawn on top of the grid
     glClear(GL_DEPTH_BUFFER_BIT);
 
     //draws the coordinate axis
     main_x_line->Draw(main_camera->GetViewProjection());
     main_y_line->Draw(main_camera->GetViewProjection());
     main_z_line->Draw(main_camera->GetViewProjection());
+
+    //clears the depth buffer to allow the objects to be drawn on top of everything before
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    //draws the objects
+    test_cube->Draw(main_camera->GetViewProjection());
 }
 
 void Renderer::ResizeCallback(GLFWwindow* _window, int _displayWidth, int _displayHeight) {

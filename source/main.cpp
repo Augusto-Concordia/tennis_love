@@ -8,7 +8,7 @@ int main() {
     std::cout << "Starting..." << std::endl;
 
     const uint16_t INITIAL_WIDTH = 1024;
-    const uint16_t INITIAL_HEIGHT = 1000;
+    const uint16_t INITIAL_HEIGHT = 768;
 
     //initialize GL context
     if (!glfwInit()) {
@@ -17,9 +17,9 @@ int main() {
     }
 
     //establish window hints
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //initialize OS window with GLFW
     GLFWwindow* window = glfwCreateWindow(INITIAL_WIDTH, INITIAL_HEIGHT, "Tennis Love", nullptr, nullptr);
@@ -28,7 +28,9 @@ int main() {
         glfwTerminate();
         return 1;
     }
+
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
 
     //initialize GLAD
     gladLoadGL();

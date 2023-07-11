@@ -6,6 +6,7 @@
 #include "Visual/VisualGrid.h"
 #include "GLFW/glfw3.h"
 #include "Components/Visual/VisualLine.h"
+#include "Components/Visual/VisualCube.h"
 
 class Renderer {
 private:
@@ -21,6 +22,8 @@ private:
     std::unique_ptr<VisualLine> main_x_line;
     std::unique_ptr<VisualLine> main_y_line;
     std::unique_ptr<VisualLine> main_z_line;
+
+    std::unique_ptr<VisualCube> test_cube;
 
 public:
     Renderer(GLFWwindow* _associatedWindow, int _initialWidth, int _initialHeight);
