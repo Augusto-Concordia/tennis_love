@@ -1,11 +1,6 @@
 #pragma once
 
-#ifndef __gl_h_
-
 #include "glad/glad.h" // include glad to get all the required OpenGL headers
-
-#endif
-
 #include "glm/vec2.hpp"
 #include "glm/mat4x4.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -26,11 +21,11 @@ public:
     public:
         Library();
 
-        static std::shared_ptr<Shader> CreateShader(const char *vertexShaderPath, const char * fragmentShaderPath);
-        static std::shared_ptr<Shader> CreateShader(uint32_t vertexShaderId, uint32_t fragmentShaderPath);
+        static std::shared_ptr<Shader> CreateShader(const char* _vertexShaderPath, const char* _fragmentShaderPath);
+        static std::shared_ptr<Shader> CreateShader(uint32_t _vertexShaderId, uint32_t _fragmentShaderPath);
 
-        static uint32_t AddShader(const char* name, GLenum type, GLsizei count, const char *code, const GLint *length = nullptr);
-        static std::shared_ptr<Shader> AddProgram(const char* name, uint32_t vertexId, uint32_t fragmentId);
+        static uint32_t AddShader(const char* _name, GLenum _type, GLsizei _count, const char* _code, const GLint* _length = nullptr);
+        static std::shared_ptr<Shader> AddProgram(const char* _name, uint32_t _vertexId, uint32_t _fragmentId);
 
     private:
         static std::string ReadShaderCode(const char* shaderCodePath);
@@ -42,16 +37,16 @@ public:
     uint32_t fragment_shader_id;
 
 public:
-    Shader(uint32_t vertexShaderId, uint32_t fragmentShaderId, uint32_t programId);
+    Shader(uint32_t _vertexShaderId, uint32_t _fragmentShaderId, uint32_t _programId);
 
     void Use() const; //activates the shader
 
-    void SetBool(const char *name, bool value) const; // utility function to set a bool value
-    void SetInt(const char *name, int value) const;  // utility function to set a int value
-    void SetFloat(const char *name, float value) const; // utility function to set a float value
-    void SetVec2(const char *name, float valueX, float valueY) const; // utility function to set a vector 2
-    void SetVec3(const char *name, float valueX, float valueY, float valueZ) const; // utility function to set a vector 3
-    void SetModelMatrix(const glm::mat4& transform) const; // utility function to set model matrix
-    void SetViewProjectionMatrix(const glm::mat4& transform) const; // utility function to set projection matrix
+    void SetBool(const char* _name, bool _value) const; // utility function to set a bool value
+    void SetInt(const char *_name, int _value) const;  // utility function to set a int _value
+    void SetFloat(const char *_name, float _value) const; // utility function to set a float _value
+    void SetVec2(const char *_name, float _valueX, float _valueY) const; // utility function to set a vector 2
+    void SetVec3(const char *_name, float _valueX, float _valueY, float _valueZ) const; // utility function to set a vector 3
+    void SetModelMatrix(const glm::mat4& _transform) const; // utility function to set model matrix
+    void SetViewProjectionMatrix(const glm::mat4& _transform) const; // utility function to set projection matrix
 };
 

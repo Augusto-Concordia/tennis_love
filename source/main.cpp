@@ -48,7 +48,7 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    std::shared_ptr<Renderer> main_renderer = Renderer::CreateRenderer(window, INITIAL_WIDTH, INITIAL_HEIGHT);
+    std::shared_ptr<Renderer> main_renderer = std::make_shared<Renderer>(window, INITIAL_WIDTH, INITIAL_HEIGHT);
 
     //unused because it doesn't provide smooth movement
     //glfwSetKeyCallback(window, Renderer::KeyCallback);

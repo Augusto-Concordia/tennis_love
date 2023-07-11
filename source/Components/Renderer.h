@@ -23,16 +23,13 @@ private:
     std::unique_ptr<VisualLine> main_z_line;
 
 public:
-    Renderer(GLFWwindow* associatedWindow, uint16_t initialWidth, uint16_t initialHeight);
+    Renderer(GLFWwindow* _associatedWindow, int _initialWidth, int _initialHeight);
     ~Renderer();
 
-    static std::shared_ptr<Renderer> CreateRenderer(GLFWwindow* associatedWindow, uint16_t initialWidth, uint16_t initialHeight);
-    static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
-    void Render(GLFWwindow* window, double deltaTime);
-    void ResizeCallback(GLFWwindow* window, int displayWidth, int displayHeight);
+    void Render(GLFWwindow* _window, double _deltaTime);
+    void ResizeCallback(GLFWwindow* _window, int _displayWidth, int _displayHeight);
 
 private:
-    void InputCallbackLocal(GLFWwindow* window, double deltaTime);
+    void InputCallbackLocal(GLFWwindow* _window, double _deltaTime);
 };
 
