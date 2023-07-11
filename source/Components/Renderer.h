@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "Visual/VisualGrid.h"
 #include "GLFW/glfw3.h"
+#include "Components/Visual/VisualLine.h"
 
 class Renderer {
 private:
@@ -16,6 +17,10 @@ private:
     std::shared_ptr<Shader> default_shader;
 
     std::unique_ptr<VisualGrid> main_grid;
+
+    std::unique_ptr<VisualLine> main_x_line;
+    std::unique_ptr<VisualLine> main_y_line;
+    std::unique_ptr<VisualLine> main_z_line;
 
 public:
     Renderer(GLFWwindow* associatedWindow, uint16_t initialWidth, uint16_t initialHeight);

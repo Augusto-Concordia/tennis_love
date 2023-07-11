@@ -20,11 +20,17 @@ void Renderer::KeyCallback(GLFWwindow* window, int key, int scancode, int action
 Renderer::Renderer(GLFWwindow* associatedWindow, uint16_t initialWidth, uint16_t initialHeight) {
     associated_window = associatedWindow;
 
-    main_camera = std::make_unique<Camera>(glm::vec3(3.0f), glm::vec3(1.0f), initialWidth, initialHeight);
+    main_camera = std::make_unique<Camera>(glm::vec3(15.0f, 15.0f, 13.0f), glm::vec3(1.0f), initialWidth, initialHeight);
 
     default_shader = Shader::Library::CreateShader("shaders/default.vert", "shaders/default.frag");
 
-    main_grid = std::make_unique<VisualGrid>(100, 100, 1.0f, glm::vec3(0.0f, -1.0f, 0.0f));
+    //grid
+    main_grid = std::make_unique<VisualGrid>(100, 100, 100.0f);
+
+    //axis
+    main_x_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(5.0f, 0.0f, 0.0f), 3.0f, glm::vec3(1.0f, 0.0f, 0.0f), 1.0f);
+    main_y_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(0.0f, 5.0f, 0.0f), 3.0f, glm::vec3(0.0f, 1.0f, 0.0f), 1.0f);
+    main_z_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 5.0f), 3.0f, glm::vec3(0.0f, 0.0f, 1.0f), 1.0f);
 }
 
 Renderer::~Renderer() {
@@ -32,6 +38,9 @@ Renderer::~Renderer() {
 }
 
 void Renderer::Render(GLFWwindow* window, const double deltaTime) {
+    //clears the canvas to black
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     //processes keyboard input
     InputCallbackLocal(window, deltaTime);
 
@@ -40,6 +49,14 @@ void Renderer::Render(GLFWwindow* window, const double deltaTime) {
 
     //draws the main grid
     main_grid->Draw(main_camera->GetViewProjection());
+
+    //clears the depth buffer to allow the axis to always be drawn on top
+    glClear(GL_DEPTH_BUFFER_BIT);
+
+    //draws the coordinate axis
+    main_x_line->Draw(main_camera->GetViewProjection());
+    main_y_line->Draw(main_camera->GetViewProjection());
+    main_z_line->Draw(main_camera->GetViewProjection());
 }
 
 void Renderer::ResizeCallback(GLFWwindow* window, int displayWidth, int displayHeight) {

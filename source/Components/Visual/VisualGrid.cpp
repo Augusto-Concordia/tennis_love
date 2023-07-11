@@ -1,9 +1,10 @@
 #include "VisualGrid.h"
-#include "Utility/Constants.h"
 #include "Utility/Math.hpp"
+#include "Utility/Transform.hpp"
 
-VisualGrid::VisualGrid(int width, int height, float cellSize, glm::vec3 position, glm::vec3 rotation) {
+VisualGrid::VisualGrid(int width, int height, float cellSize, float thickness, glm::vec3 position, glm::vec3 rotation) {
     cell_size = cellSize;
+    this->thickness = thickness;
 
     this->width = width;
     this->height = height;
@@ -102,12 +103,19 @@ void VisualGrid::Draw(const glm::mat4& viewProjection) {
     glBindVertexArray(vertex_array_o);
 
     glm::mat4 model_matrix = glm::mat4(1.0f);
+
+    //since we want to respect the traditional order (scale, rotate, translate), the scaling is done on the z-axis instead of the y
+    model_matrix = glm::scale(model_matrix, glm::vec3(cell_size / 2, cell_size / 2, 0.0f));
+
+    //rotated -90deg, because the grid should facing up
     model_matrix = glm::translate(model_matrix, position);
-    model_matrix = glm::rotate(model_matrix, Constants::PI / 2, glm::vec3(1.0f, 0.0f, 0.0f));
 
     shader->Use();
     shader->SetModelMatrix(model_matrix);
     shader->SetViewProjectionMatrix(viewProjection);
+
+    //sets grid's lines thickness
+    glLineWidth(thickness);
 
     //draw vertices according to their indices
     glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, nullptr);

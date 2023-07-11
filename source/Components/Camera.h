@@ -17,7 +17,7 @@ public:
         RIGHT
     };
 
-    float speed = 2.5f;
+    float speed = 4.5f;
 
     const float FOV = 75.0f;
     const float NEAR_PLANE = 0.1f;

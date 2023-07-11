@@ -1,5 +1,5 @@
 #include "Camera.h"
-#include "Utility/Constants.h"
+#include "Utility/Transform.hpp"
 
 Camera::Camera() : Camera::Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f)) {}
 
@@ -8,7 +8,7 @@ Camera::Camera(glm::vec3 position, glm::vec3 target, float viewportWidth, float 
     cam_target = target;
 
     cam_forward = glm::normalize(cam_position - cam_target);
-    cam_right = glm::normalize(glm::cross(cam_forward, Constants::UP));
+    cam_right = glm::normalize(glm::cross(cam_forward, Transforms::UP));
     cam_up = glm::normalize(glm::cross(cam_right, cam_forward));
 
     viewport_width = viewportWidth;
