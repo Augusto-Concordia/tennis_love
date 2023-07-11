@@ -4,27 +4,14 @@
 #include <vector>
 #include "glm/vec3.hpp"
 #include "Components/Shader.h"
+#include "VisualObject.h"
 
-class VisualLine {
+class VisualLine : public VisualObject {
 public:
-    glm::vec3 start, end;
-
-    float thickness;
-    glm::vec3 color;
-    float alpha;
-
-private:
-    std::shared_ptr<Shader> shader;
-
-    std::vector<float> vertices;
-    std::vector<int> indices;
-
-    GLuint vertex_array_o;
-    GLuint vertex_buffer_o;
-    GLuint element_buffer_o;
+    glm::vec3 end;
 
 public:
-    explicit VisualLine(glm::vec3 start = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 end = glm::vec3(1.0f, 1.0f, 1.0f), float thickness = 1.0f, glm::vec3 color = glm::vec3(1.0f), float alpha = 1.0f);
+    explicit VisualLine(glm::vec3 _start = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 _end = glm::vec3(1.0f, 1.0f, 1.0f), float _lineThickness = 1.0f, glm::vec3 _color = glm::vec3(1.0f), float _alpha = 1.0f);
 
-    void Draw(const glm::mat4& viewProjection);
+    void Draw(const glm::mat4& _viewProjection) override;
 };

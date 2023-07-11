@@ -3,42 +3,42 @@
 
 Camera::Camera() : Camera::Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f)) {}
 
-Camera::Camera(glm::vec3 position, glm::vec3 target, float viewportWidth, float viewportHeight) {
-    cam_position = position;
-    cam_target = target;
+Camera::Camera(glm::vec3 _position, glm::vec3 _target, float _viewportWidth, float _viewportHeight) {
+    cam_position = _position;
+    cam_target = _target;
 
     cam_forward = glm::normalize(cam_position - cam_target);
     cam_right = glm::normalize(glm::cross(cam_forward, Transforms::UP));
     cam_up = glm::normalize(glm::cross(cam_right, cam_forward));
 
-    viewport_width = viewportWidth;
-    viewport_height = viewportHeight;
+    viewport_width = _viewportWidth;
+    viewport_height = _viewportHeight;
 
     UpdateView();
     UpdateProjection();
 }
 
-void Camera::OneAxisMove(Camera::Movement movement, float amount) {
+void Camera::OneAxisMove(Camera::Movement _movement, float _amount) {
     glm::vec3 delta;
 
-    switch (movement) {
+    switch (_movement) {
         case UP:
-            delta = amount * speed * cam_up;
+            delta = _amount * speed * cam_up;
             break;
         case DOWN:
-            delta = -amount * speed * cam_up;
+            delta = -_amount * speed * cam_up;
             break;
         case LEFT:
-            delta = amount * speed * cam_right;
+            delta = _amount * speed * cam_right;
             break;
         case RIGHT:
-            delta = -amount * speed * cam_right;
+            delta = -_amount * speed * cam_right;
             break;
         case FORWARD:
-            delta = -amount * speed * cam_forward;
+            delta = -_amount * speed * cam_forward;
             break;
         case BACKWARD:
-            delta = amount * speed * cam_forward;
+            delta = _amount * speed * cam_forward;
             break;
     }
 
@@ -48,9 +48,9 @@ void Camera::OneAxisMove(Camera::Movement movement, float amount) {
     UpdateView();
 }
 
-void Camera::SetViewportSize(float width, float height) {
-    viewport_width = width;
-    viewport_height = height;
+void Camera::SetViewportSize(float _width, float _height) {
+    viewport_width = _width;
+    viewport_height = _height;
 
     UpdateProjection();
 }

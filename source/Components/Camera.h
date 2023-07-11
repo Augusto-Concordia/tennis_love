@@ -26,11 +26,11 @@ public:
 public:
     Camera();
 
-    Camera(glm::vec3 position, glm::vec3 target, float viewportWidth = 1280, float viewportHeight = 720);
+    Camera(glm::vec3 _position, glm::vec3 _target, float _viewportWidth = 1280, float _viewportHeight = 720);
 
-    void OneAxisMove(Movement movement, float delta);
+    void OneAxisMove(Movement _movement, float _delta);
 
-    void SetViewportSize(float width, float height);
+    void SetViewportSize(float _width, float _height);
 
     [[nodiscard]] glm::vec3 GetPosition() const;
     [[nodiscard]] glm::mat4 GetViewProjection() const;
