@@ -13,5 +13,5 @@ public:
 public:
     explicit VisualLine(glm::vec3 _start = glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3 _end = glm::vec3(1.0f, 1.0f, 1.0f), float _lineThickness = 1.0f, glm::vec3 _color = glm::vec3(1.0f), float _alpha = 1.0f);
 
-    void Draw(const glm::mat4& _viewProjection) override;
+    void Draw(const glm::mat4& _viewProjection,  const glm::vec3 &_cameraPosition) override;
 };

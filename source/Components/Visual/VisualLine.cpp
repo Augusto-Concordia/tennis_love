@@ -21,7 +21,7 @@ VisualLine::VisualLine(glm::vec3 _start, glm::vec3 _end, float _lineThickness, g
     VisualObject::SetupGlBuffersVerticesOnly();
 }
 
-void VisualLine::Draw(const glm::mat4& _viewProjection) {
+void VisualLine::Draw(const glm::mat4& _viewProjection,  const glm::vec3 &_cameraPosition) {
     //bind the vertex array to draw
     glBindVertexArray(vertex_array_o);
 

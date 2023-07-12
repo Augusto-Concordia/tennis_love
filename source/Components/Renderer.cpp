@@ -37,21 +37,21 @@ void Renderer::Render(GLFWwindow* _window, const double _deltaTime) {
     default_shader->Use();
 
     //draws the main grid
-    main_grid->Draw(main_camera->GetViewProjection());
+    main_grid->Draw(main_camera->GetViewProjection(), main_camera->GetPosition());
 
     //clears the depth buffer to allow the axis to always be drawn on top of the grid
     glClear(GL_DEPTH_BUFFER_BIT);
 
     //draws the coordinate axis
-    main_x_line->Draw(main_camera->GetViewProjection());
-    main_y_line->Draw(main_camera->GetViewProjection());
-    main_z_line->Draw(main_camera->GetViewProjection());
+    main_x_line->Draw(main_camera->GetViewProjection(), main_camera->GetPosition());
+    main_y_line->Draw(main_camera->GetViewProjection(), main_camera->GetPosition());
+    main_z_line->Draw(main_camera->GetViewProjection(), main_camera->GetPosition());
 
     //clears the depth buffer to allow the objects to be drawn on top of everything before
     glClear(GL_DEPTH_BUFFER_BIT);
 
     //draws the objects
-    test_cube->Draw(main_camera->GetViewProjection());
+    test_cube->Draw(main_camera->GetViewProjection(), main_camera->GetPosition());
 }
 
 void Renderer::ResizeCallback(GLFWwindow* _window, int _displayWidth, int _displayHeight) {

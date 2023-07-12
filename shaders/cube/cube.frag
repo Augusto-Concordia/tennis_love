@@ -2,12 +2,43 @@
 
 #version 450 core
 
-uniform vec3 u_color; //grid color
-uniform float u_alpha; //grid opacity
+uniform vec3 u_cam_pos; //cam position
+
+uniform vec3 u_light_pos; //main light position
+uniform vec3 u_light_color; //main light color
+
+uniform vec3 u_color; //cube color
+uniform float u_alpha; //cube opacity
+
+in vec3 FragPos;
+in vec3 Normal;
 
 out vec4 fragColor; //rgba color output
 
 //entrypoint
 void main() {
-    fragColor = vec4(u_color, u_alpha);
+    //ambient lighting calculation
+    float ambientStrength = 0.1;
+    vec3 ambient = ambientStrength * u_light_color;
+
+    //diffuse lighting calculation
+    vec3 norm = normalize(Normal);
+    vec3 lightDir = normalize(u_light_pos - FragPos);
+
+    float diffFactor = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = diffFactor * u_light_color;
+
+    //specular lighting calculation
+    float specularStrength = 0.5;
+    int shininess = 32;
+
+    vec3 viewDir = normalize(u_cam_pos - FragPos);
+    vec3 reflectDir = reflect(-lightDir, norm);
+
+    float specularFactor = pow(max(dot(viewDir, reflectDir), 0.0), shininess);
+    vec3 specular = specularFactor * specularStrength * u_light_color;
+
+    vec3 colorResult = (ambient + diffuse + specular) * u_color;
+
+    fragColor = vec4(colorResult, u_alpha);
 }

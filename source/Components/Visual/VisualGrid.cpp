@@ -62,7 +62,7 @@ VisualGrid::VisualGrid(int _width, int _height, float _cellSize, float _lineThic
     VisualObject::SetupGlBuffersVerticesOnly();
 }
 
-void VisualGrid::Draw(const glm::mat4& viewProjection) {
+void VisualGrid::Draw(const glm::mat4& viewProjection, const glm::vec3 &_cameraPosition) {
     //bind the vertex array to draw
     glBindVertexArray(vertex_array_o);
 
