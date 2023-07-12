@@ -17,9 +17,9 @@ int main() {
     }
 
     //establish window hints
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    //glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
-    //glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     //initialize OS window with GLFW
     GLFWwindow* window = glfwCreateWindow(INITIAL_WIDTH, INITIAL_HEIGHT, "Tennis Love", nullptr, nullptr);
@@ -50,7 +50,7 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    std::shared_ptr<Renderer> main_renderer = std::make_shared<Renderer>(window, INITIAL_WIDTH, INITIAL_HEIGHT);
+    Renderer main_renderer = Renderer(INITIAL_WIDTH, INITIAL_HEIGHT);
 
     //unused because it doesn't provide smooth movement
     //glfwSetKeyCallback(window, Renderer::KeyCallback);
@@ -68,10 +68,10 @@ int main() {
 
             glViewport(0, 0, display_w, display_h);
 
-            main_renderer->ResizeCallback(window, display_w, display_h);
+            main_renderer.ResizeCallback(window, display_w, display_h);
         }
 
-        main_renderer->Render(window, glfwGetTime() - previous_time);
+        main_renderer.Render(window, glfwGetTime() - previous_time);
 
         //stores current time for next frame
         previous_time = glfwGetTime();

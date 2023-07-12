@@ -10,10 +10,6 @@
 
 class Renderer {
 private:
-    static std::unordered_map<GLFWwindow*, std::shared_ptr<Renderer>> instances;
-
-    GLFWwindow* associated_window;
-
     std::shared_ptr<Camera> main_camera;
     std::shared_ptr<Shader> default_shader;
 
@@ -23,16 +19,13 @@ private:
     std::unique_ptr<VisualLine> main_y_line;
     std::unique_ptr<VisualLine> main_z_line;
 
-    std::unique_ptr<VisualCube> test_cube;
+    std::vector<VisualCube> racket_cubes;
 
 public:
-    Renderer(GLFWwindow* _associatedWindow, int _initialWidth, int _initialHeight);
-    ~Renderer();
+    Renderer(int _initialWidth, int _initialHeight);
 
     void Render(GLFWwindow* _window, double _deltaTime);
     void ResizeCallback(GLFWwindow* _window, int _displayWidth, int _displayHeight);
-
-private:
-    void InputCallbackLocal(GLFWwindow* _window, double _deltaTime);
+    void InputCallback(GLFWwindow* _window, double _deltaTime);
 };
 

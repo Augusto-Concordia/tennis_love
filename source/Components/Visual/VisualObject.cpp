@@ -1,8 +1,9 @@
 #include "VisualObject.h"
 
-VisualObject::VisualObject(const char* _vertShaderSource, const char* _fragSourceShader, glm::vec3 _position, glm::vec3 _rotation, float _lineThickness, glm::vec3 _color, float _alpha) {
+VisualObject::VisualObject(const char* _vertShaderSource, const char* _fragSourceShader, glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scale, float _lineThickness, glm::vec3 _color, float _alpha) {
     position = _position;
     rotation = _rotation;
+    scale = _scale;
 
     line_thickness = _lineThickness;
 

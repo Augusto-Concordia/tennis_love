@@ -1,7 +1,7 @@
 #include "VisualLine.h"
 #include "Utility/Transform.hpp"
 
-VisualLine::VisualLine(glm::vec3 _start, glm::vec3 _end, float _lineThickness, glm::vec3 _color, float _alpha) : VisualObject("shaders/grid/grid.vert", "shaders/grid/grid.frag", _start, glm::vec3(0.0f), _lineThickness, _color, _alpha) {
+VisualLine::VisualLine(glm::vec3 _start, glm::vec3 _end, float _lineThickness, glm::vec3 _color, float _alpha) : VisualObject("shaders/grid/grid.vert", "shaders/grid/grid.frag", _start, glm::vec3(0.0f), glm::vec3(1.0f), _lineThickness, _color, _alpha) {
     position = _start;
     end = _end;
 
@@ -26,7 +26,6 @@ void VisualLine::Draw(const glm::mat4& _viewProjection,  const glm::vec3 &_camer
     glBindVertexArray(vertex_array_o);
 
     glm::mat4 model_matrix = glm::mat4(1.0f);
-    model_matrix = Transforms::RotateDegrees(model_matrix, rotation);
 
     shader->Use();
     shader->SetModelMatrix(model_matrix);

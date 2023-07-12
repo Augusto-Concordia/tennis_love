@@ -1,7 +1,7 @@
 #include "VisualCube.h"
 #include "Utility/Transform.hpp"
 
-VisualCube::VisualCube(glm::vec3 _position, glm::vec3 _rotation, float _lineThickness, glm::vec3 _color, float _alpha) : VisualObject("shaders/cube/cube.vert", "shaders/cube/cube.frag", _position, _rotation, _lineThickness, _color, _alpha) {
+VisualCube::VisualCube(glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scale, glm::vec3 _transformOffset, float _lineThickness, glm::vec3 _color, float _alpha) : VisualObject("shaders/cube/cube.vert", "shaders/cube/cube.frag", _position, _rotation, _scale, _lineThickness, _color, _alpha) {
     //vertices with their normals
     vertices = {
             //top face, top triangle
@@ -65,6 +65,12 @@ VisualCube::VisualCube(glm::vec3 _position, glm::vec3 _rotation, float _lineThic
             -0.5f, 0.5f, -0.5f, 0.0f, 0.0f, -1.0f,
     };
 
+    for (int i = 0; i < vertices.size(); i += 6) {
+        vertices[i] += _transformOffset.x;
+        vertices[i + 1] += _transformOffset.y;
+        vertices[i + 2] += _transformOffset.z;
+    }
+
     VisualObject::SetupGlBuffersVerticesAndNormalsOnlyNoIndices();
 }
 
@@ -73,10 +79,30 @@ void VisualCube::Draw(const glm::mat4& _viewProjection, const glm::vec3 &_camera
     glBindVertexArray(vertex_array_o);
 
     glm::mat4 model_matrix = glm::mat4(1.0f);
+    model_matrix = glm::translate(model_matrix, position);
     model_matrix = Transforms::RotateDegrees(model_matrix, rotation);
+    model_matrix = glm::scale(model_matrix, scale);
 
     shader->Use();
     shader->SetModelMatrix(model_matrix);
+    shader->SetViewProjectionMatrix(_viewProjection);
+
+    shader->SetVec3("u_light_pos", 7.5f, -3.2f, 9.0f);
+    shader->SetVec3("u_light_color", 0.76f, 0.23f, 0.36f);
+    shader->SetVec3("u_cam_pos", _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
+    shader->SetVec3("u_color", color.r, color.g, color.b);
+    shader->SetFloat("u_alpha", alpha);
+
+    //draw vertices according to their indices
+    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+}
+
+void VisualCube::DrawFromMatrix(const glm::mat4 &_viewProjection, const glm::vec3 &_cameraPosition, glm::mat4 &_transformMatrix) {
+    //bind the vertex array to draw
+    glBindVertexArray(vertex_array_o);
+
+    shader->Use();
+    shader->SetModelMatrix(_transformMatrix);
     shader->SetViewProjectionMatrix(_viewProjection);
 
     shader->SetVec3("u_light_pos", 7.5f, -3.2f, 9.0f);

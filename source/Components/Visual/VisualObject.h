@@ -7,8 +7,7 @@
 
 class VisualObject {
 public:
-    glm::vec3 position;
-    glm::vec3 rotation;
+    glm::vec3 position, rotation, scale;
 
     float line_thickness;
 
@@ -26,7 +25,7 @@ protected:
     GLuint element_buffer_o;
 
 public:
-    explicit VisualObject(const char* _vertShaderSource = "shaders/default.vert", const char* _fragShaderSource = "shaders/default.frag", glm::vec3 _position = glm::vec3(0.0f), glm::vec3 _rotation = glm::vec3(0.0f), float _lineThickness = 1.0f, glm::vec3 _color = glm::vec3(1.0f), float _alpha = 1.0f);
+    explicit VisualObject(const char* _vertShaderSource = "shaders/default.vert", const char* _fragShaderSource = "shaders/default.frag", glm::vec3 _position = glm::vec3(0.0f), glm::vec3 _rotation = glm::vec3(0.0f), glm::vec3 _scale = glm::vec3(1.0f), float _lineThickness = 1.0f, glm::vec3 _color = glm::vec3(1.0f), float _alpha = 1.0f);
 
     virtual void Draw(const glm::mat4& _viewProjection, const glm::vec3 &_cameraPosition) = 0;
 

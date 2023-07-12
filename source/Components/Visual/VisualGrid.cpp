@@ -2,7 +2,7 @@
 #include "Utility/Math.hpp"
 #include "Utility/Transform.hpp"
 
-VisualGrid::VisualGrid(int _width, int _height, float _cellSize, float _lineThickness, glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _color, float _alpha) : VisualObject("shaders/grid/grid.vert", "shaders/grid/grid.frag", _position, _rotation, _lineThickness, _color, _alpha) {
+VisualGrid::VisualGrid(int _width, int _height, float _cellSize, float _lineThickness, glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _color, float _alpha) : VisualObject("shaders/grid/grid.vert", "shaders/grid/grid.frag", _position, _rotation, glm::vec3(0.0f), _lineThickness, _color, _alpha) {
     cell_size = _cellSize;
     width = _width;
     height = _height;
