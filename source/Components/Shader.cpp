@@ -30,6 +30,10 @@ void Shader::SetVec3(const char *_name, float _valueX, float _valueY, float _val
     glProgramUniform3f(program_id, glGetUniformLocation(program_id, _name), _valueX, _valueY, _valueZ);
 }
 
+void Shader::SetVec3(const char *_name, const glm::vec3& _value) const {
+    glProgramUniform3f(program_id, glGetUniformLocation(program_id, _name), _value.x, _value.y, _value.z);
+}
+
 void Shader::SetModelMatrix(const glm::mat4 &_transform) const {
     glProgramUniformMatrix4fv(program_id, glGetUniformLocation(program_id, "u_model_transform"), 1, GL_FALSE, glm::value_ptr(_transform));
 }

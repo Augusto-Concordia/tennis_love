@@ -31,6 +31,24 @@ public:
         static std::string ReadShaderCode(const char* shaderCodePath);
     };
 
+    struct Descriptor {
+    public:
+        const char* vertex_shader_path = "shaders/default.vert";
+        const char* fragment_shader_path = "shaders/default.frag";
+
+        float line_thickness = 1.0f;
+
+        glm::vec3 color = glm::vec3(1.0f);
+        float alpha = 1.0f;
+
+        glm::vec3 light_position = glm::vec3(0.0f);
+        glm::vec3 light_color = glm::vec3(1.0f);
+
+        float ambient_strength = 0.1f;
+        float specular_strength = 0.5f;
+        int shininess = 32;
+    };
+
 public:
     uint32_t program_id;
     uint32_t vertex_shader_id;
@@ -45,7 +63,11 @@ public:
     void SetInt(const char *_name, int _value) const;  // utility function to set a int _value
     void SetFloat(const char *_name, float _value) const; // utility function to set a float _value
     void SetVec2(const char *_name, float _valueX, float _valueY) const; // utility function to set a vector 2
-    void SetVec3(const char *_name, float _valueX, float _valueY, float _valueZ) const; // utility function to set a vector 3
+
+    // utility functions to set a vector 3
+    void SetVec3(const char *_name, float _valueX, float _valueY, float _valueZ) const;
+    void SetVec3(const char *_name, const glm::vec3& _value) const;
+
     void SetModelMatrix(const glm::mat4& _transform) const; // utility function to set model matrix
     void SetViewProjectionMatrix(const glm::mat4& _transform) const; // utility function to set projection matrix
 };

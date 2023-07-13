@@ -7,6 +7,10 @@ uniform vec3 u_cam_pos; //cam position
 uniform vec3 u_light_pos; //main light position
 uniform vec3 u_light_color; //main light color
 
+uniform float u_ambient_strength; //ambient light strength
+uniform float u_specular_strength; //specular light strength
+uniform int u_shininess; //light shininess
+
 uniform vec3 u_color; //cube color
 uniform float u_alpha; //cube opacity
 

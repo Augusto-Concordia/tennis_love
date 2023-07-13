@@ -9,10 +9,7 @@ class VisualObject {
 public:
     glm::vec3 position, rotation, scale;
 
-    float line_thickness;
-
-    glm::vec3 color;
-    float alpha;
+    Shader::Descriptor shader_descriptor;
 
 protected:
     std::shared_ptr<Shader> shader;
@@ -26,7 +23,7 @@ protected:
 
 public:
     //todo: create various constructors that have different parameters (for higher flexibility)
-    explicit VisualObject(const char* _vertShaderSource = "shaders/default.vert", const char* _fragShaderSource = "shaders/default.frag", glm::vec3 _position = glm::vec3(0.0f), glm::vec3 _rotation = glm::vec3(0.0f), glm::vec3 _scale = glm::vec3(1.0f), float _lineThickness = 1.0f, glm::vec3 _color = glm::vec3(1.0f), float _alpha = 1.0f);
+    explicit VisualObject(glm::vec3 _position = glm::vec3(0.0f), glm::vec3 _rotation = glm::vec3(0.0f), glm::vec3 _scale = glm::vec3(1.0f), Shader::Descriptor _descriptor = Shader::Descriptor());
 
     //todo: add a way of drawing the object directly with a matrix
     virtual void Draw(const glm::mat4& _viewProjection, const glm::vec3 &_cameraPosition) = 0;

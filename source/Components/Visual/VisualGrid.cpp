@@ -2,7 +2,7 @@
 #include "Utility/Math.hpp"
 #include "Utility/Transform.hpp"
 
-VisualGrid::VisualGrid(int _width, int _height, float _cellSize, float _lineThickness, glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _color, float _alpha) : VisualObject("shaders/grid/grid.vert", "shaders/grid/grid.frag", _position, _rotation, glm::vec3(0.0f), _lineThickness, _color, _alpha) {
+VisualGrid::VisualGrid(int _width, int _height, float _cellSize, glm::vec3 _position, glm::vec3 _rotation, Shader::Descriptor _descriptor) : VisualObject(_position, _rotation, glm::vec3(0.0f), _descriptor) {
     cell_size = _cellSize;
     width = _width;
     height = _height;
@@ -75,11 +75,11 @@ void VisualGrid::Draw(const glm::mat4& viewProjection, const glm::vec3 &_cameraP
     shader->SetModelMatrix(model_matrix);
     shader->SetViewProjectionMatrix(viewProjection);
 
-    shader->SetVec3("u_color", 1.0f, 1.0f, 1.0f);
-    shader->SetFloat("u_alpha", 0.4f);
+    shader->SetVec3("u_color", shader_descriptor.color.x, shader_descriptor.color.y, shader_descriptor.color.z);
+    shader->SetFloat("u_alpha", shader_descriptor.alpha);
 
     //sets grid's lines thickness
-    glLineWidth(line_thickness);
+    glLineWidth(shader_descriptor.line_thickness);
 
     //draw vertices according to their indices
     glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, nullptr);

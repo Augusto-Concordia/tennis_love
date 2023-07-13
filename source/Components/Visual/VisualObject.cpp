@@ -1,20 +1,17 @@
 #include "VisualObject.h"
 
-VisualObject::VisualObject(const char* _vertShaderSource, const char* _fragSourceShader, glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scale, float _lineThickness, glm::vec3 _color, float _alpha) {
+VisualObject::VisualObject(glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scale, Shader::Descriptor _descriptor) {
     position = _position;
     rotation = _rotation;
     scale = _scale;
 
-    line_thickness = _lineThickness;
-
-    color = _color;
-    alpha = _alpha;
+    shader_descriptor = _descriptor;
 
     vertex_array_o = 0;
     vertex_buffer_o = 0;
     element_buffer_o = 0;
 
-    shader = Shader::Library::CreateShader(_vertShaderSource, _fragSourceShader);
+    shader = Shader::Library::CreateShader(shader_descriptor.vertex_shader_path, shader_descriptor.fragment_shader_path);
 }
 
 void VisualObject::SetupGlBuffersVerticesOnly() {

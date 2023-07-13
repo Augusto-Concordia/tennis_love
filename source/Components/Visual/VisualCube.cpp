@@ -1,7 +1,7 @@
 #include "VisualCube.h"
 #include "Utility/Transform.hpp"
 
-VisualCube::VisualCube(glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scale, glm::vec3 _transformOffset, float _lineThickness, glm::vec3 _color, float _alpha) : VisualObject("shaders/cube/lit.vert", "shaders/cube/lit.frag", _position, _rotation, _scale, _lineThickness, _color, _alpha) {
+VisualCube::VisualCube(glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scale, glm::vec3 _transformOffset, Shader::Descriptor _descriptor) : VisualObject( _position, _rotation, _scale, _descriptor) {
     //vertices with their normals
     vertices = {
             //top face, top triangle
@@ -90,8 +90,8 @@ void VisualCube::Draw(const glm::mat4& _viewProjection, const glm::vec3 &_camera
     shader->SetVec3("u_light_pos", 7.5f, -3.2f, 9.0f);
     shader->SetVec3("u_light_color", 0.76f, 0.23f, 0.36f);
     shader->SetVec3("u_cam_pos", _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
-    shader->SetVec3("u_color", color.r, color.g, color.b);
-    shader->SetFloat("u_alpha", alpha);
+    shader->SetVec3("u_color", shader_descriptor.color.r, shader_descriptor.color.g, shader_descriptor.color.b);
+    shader->SetFloat("u_alpha", shader_descriptor.alpha);
 
     //draw vertices according to their indices
     glDrawArrays(GL_TRIANGLES, 0, vertices.size());
@@ -105,11 +105,17 @@ void VisualCube::DrawFromMatrix(const glm::mat4 &_viewProjection, const glm::vec
     shader->SetModelMatrix(_transformMatrix);
     shader->SetViewProjectionMatrix(_viewProjection);
 
-    shader->SetVec3("u_light_pos", 7.5f, -3.2f, 9.0f);
-    shader->SetVec3("u_light_color", 0.76f, 0.23f, 0.36f);
-    shader->SetVec3("u_cam_pos", _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
-    shader->SetVec3("u_color", color.r, color.g, color.b);
-    shader->SetFloat("u_alpha", alpha);
+    shader->SetVec3("u_color", shader_descriptor.color);
+    shader->SetFloat("u_alpha", shader_descriptor.alpha);
+
+    shader->SetVec3("u_cam_pos", _cameraPosition);
+
+    shader->SetVec3("u_light_pos", shader_descriptor.light_position);
+    shader->SetVec3("u_light_color", shader_descriptor.light_color);
+
+    shader->SetFloat("u_ambient_strength", shader_descriptor.ambient_strength);
+    shader->SetFloat("u_specular_strength", shader_descriptor.specular_strength);
+    shader->SetInt("u_shininess", shader_descriptor.shininess);
 
     //draw vertices according to their indices
     glDrawArrays(GL_TRIANGLES, 0, vertices.size());

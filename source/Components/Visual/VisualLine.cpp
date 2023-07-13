@@ -1,7 +1,6 @@
 #include "VisualLine.h"
-#include "Utility/Transform.hpp"
 
-VisualLine::VisualLine(glm::vec3 _start, glm::vec3 _end, float _lineThickness, glm::vec3 _color, float _alpha) : VisualObject("shaders/grid/grid.vert", "shaders/grid/grid.frag", _start, glm::vec3(0.0f), glm::vec3(1.0f), _lineThickness, _color, _alpha) {
+VisualLine::VisualLine(glm::vec3 _start, glm::vec3 _end, Shader::Descriptor _descriptor) : VisualObject(_start, glm::vec3(0.0f), glm::vec3(1.0f), _descriptor) {
     position = _start;
     end = _end;
 
@@ -31,11 +30,11 @@ void VisualLine::Draw(const glm::mat4& _viewProjection,  const glm::vec3 &_camer
     shader->SetModelMatrix(model_matrix);
     shader->SetViewProjectionMatrix(_viewProjection);
 
-    shader->SetVec3("u_color", color.r, color.g, color.b);
-    shader->SetFloat("u_alpha", alpha);
+    shader->SetVec3("u_color", shader_descriptor.color.r, shader_descriptor.color.g, shader_descriptor.color.b);
+    shader->SetFloat("u_alpha", shader_descriptor.alpha);
 
     //sets line thickness
-    glLineWidth(line_thickness);
+    glLineWidth(shader_descriptor.line_thickness);
 
     //draw vertices according to their indices
     glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, nullptr);
