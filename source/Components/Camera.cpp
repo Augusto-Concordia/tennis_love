@@ -4,12 +4,10 @@
 Camera::Camera() : Camera::Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f)) {}
 
 Camera::Camera(glm::vec3 _position, glm::vec3 _target, float _viewportWidth, float _viewportHeight) {
-    cam_position = _position;
-    cam_target = _target;
+    cam_position = default_cam_position = _position;
+    cam_target = default_cam_target = _target;
 
-    cam_forward = glm::normalize(cam_position - cam_target);
-    cam_right = glm::normalize(glm::cross(cam_forward, Transforms::UP));
-    cam_up = glm::normalize(glm::cross(cam_right, cam_forward));
+    distance_to_target = glm::length(default_cam_position - default_cam_target);
 
     viewport_width = _viewportWidth;
     viewport_height = _viewportHeight;
@@ -18,32 +16,120 @@ Camera::Camera(glm::vec3 _position, glm::vec3 _target, float _viewportWidth, flo
     UpdateProjection();
 }
 
-void Camera::OneAxisMove(Camera::Movement _movement, float _amount) {
-    glm::vec3 delta;
+void Camera::OneAxisMove(Camera::Translation _translation, float _delta) {
+    //2 delta variables so that when we are translating into the target (CAMERA_FORWARD & CAMERA_BACKWARD),
+    // we don't move the target too
+    auto delta_cam = glm::vec3(0), delta_target = glm::vec3(0);
 
-    switch (_movement) {
+    switch (_translation) {
         case UP:
-            delta = _amount * speed * cam_up;
+            delta_target = delta_cam = _delta * translation_speed * Transforms::UP;
             break;
         case DOWN:
-            delta = -_amount * speed * cam_up;
+            delta_target = delta_cam = -_delta * translation_speed * Transforms::UP;
+            break;
+        case CAMERA_UP:
+            delta_target = delta_cam = -_delta * translation_speed * cam_up;
+            break;
+        case CAMERA_DOWN:
+            delta_target = delta_cam = _delta * translation_speed * cam_up;
             break;
         case LEFT:
-            delta = _amount * speed * cam_right;
+            delta_target = delta_cam = _delta * translation_speed * cam_right;
             break;
         case RIGHT:
-            delta = -_amount * speed * cam_right;
+            delta_target = delta_cam = -_delta * translation_speed * cam_right;
             break;
+
+            //we take the cross because we want to move forward,
+            //parallel to the ground (similar to other programs' world space toggle)
         case FORWARD:
-            delta = -_amount * speed * cam_forward;
+            delta_target = delta_cam = _delta * translation_speed * glm::cross(cam_right, Transforms::UP);
             break;
         case BACKWARD:
-            delta = _amount * speed * cam_forward;
+            delta_target = delta_cam = -_delta * translation_speed * glm::cross(cam_right, Transforms::UP);
+            break;
+
+            //camera forward & backward follows the center of the camera's view
+        case CAMERA_FORWARD:
+            delta_cam = -_delta * translation_speed * cam_forward;
+            break;
+        case CAMERA_BACKWARD:
+            delta_cam = _delta * translation_speed * cam_forward;
             break;
     }
 
-    cam_target += delta;
-    cam_position += delta;
+    cam_target += delta_target;
+    cam_position += delta_cam;
+
+    //if we changed the distance between the camera and the target, recalculate it
+    if (delta_target != delta_cam)
+        distance_to_target = glm::length(cam_position - cam_target);
+
+    UpdateView();
+}
+
+void Camera::OneAxisRotate(Camera::Rotation _rotation, float _delta) {
+    glm::vec3 rotation_axis;
+
+    //to easily rotate the camera itself, we create a rotation matrix that creates a rotated vector, and we subtract it from the camera's position
+    switch (_rotation) {
+        case POSITIVE_PITCH:
+            rotation_axis = -cam_right;
+            break;
+        case NEGATIVE_PITCH:
+            rotation_axis = cam_right;
+            break;
+        case POSITIVE_ROLL:
+            rotation_axis = -cam_forward;
+            break;
+        case NEGATIVE_ROLL:
+            rotation_axis = cam_forward;
+            break;
+        case POSITIVE_YAW:
+            rotation_axis = cam_up;
+            break;
+        case NEGATIVE_YAW:
+            rotation_axis = -cam_up;
+            break;
+    }
+
+    glm::mat4 rotation_matrix = glm::mat4(1);
+    rotation_matrix = glm::rotate(rotation_matrix, glm::radians(_delta * rotation_speed), rotation_axis);
+
+    cam_forward = glm::vec3(glm::vec4(cam_forward, 1.0) * rotation_matrix);
+    cam_target = cam_position - cam_forward * distance_to_target;
+
+    UpdateView();
+}
+
+void Camera::OneAxisOrbit(Camera::Orbitation _orbitation, float _delta) {
+    glm::vec3 rotation_axis;
+
+    //to easily orbit the camera, we create a rotation matrix that creates a rotated vector, and we add it to the target's position
+    switch (_orbitation) {
+        case ORBIT_UP:
+            rotation_axis = cam_right;
+            break;
+        case ORBIT_DOWN:
+            rotation_axis = -cam_right;
+            break;
+        case ORBIT_RIGHT:
+            rotation_axis = Transforms::UP;
+            break;
+        case ORBIT_LEFT:
+            rotation_axis = -Transforms::UP;
+            break;
+    }
+
+    glm::mat4 rotation_matrix = glm::mat4(1);
+    //todo: explain to myself why this doesn't work
+    //rotation_matrix = glm::translate(rotation_matrix, cam_target - cam_position);
+    rotation_matrix = glm::rotate(rotation_matrix, glm::radians(_delta * orbit_speed), rotation_axis);
+    //rotation_matrix = glm::translate(rotation_matrix, cam_position - cam_target);
+
+    cam_forward = glm::vec3(rotation_matrix * glm::vec4(cam_forward, 1.0));
+    cam_position = cam_target + cam_forward * distance_to_target;
 
     UpdateView();
 }
@@ -55,6 +141,15 @@ void Camera::SetViewportSize(float _width, float _height) {
     UpdateProjection();
 }
 
+void Camera::SetDefaultPositionAndTarget() {
+    cam_position = default_cam_position;
+    cam_target = default_cam_target;
+
+    distance_to_target = glm::length(cam_position - cam_target);
+
+    UpdateView();
+}
+
 glm::vec3 Camera::GetPosition() const {
     return cam_position;
 }
@@ -64,6 +159,10 @@ glm::mat4 Camera::GetViewProjection() const {
 }
 
 void Camera::UpdateView() {
+    cam_forward = glm::normalize(cam_position - cam_target);
+    cam_right = glm::normalize(glm::cross(cam_forward, Transforms::UP));
+    cam_up = glm::normalize(glm::cross(cam_right, cam_forward));
+
     view_matrix = glm::lookAt(cam_position, cam_target, cam_up);
 }
 

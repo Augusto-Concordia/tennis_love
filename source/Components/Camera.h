@@ -8,16 +8,40 @@
 
 class Camera {
 public:
-    enum Movement {
+    enum Translation {
+        CAMERA_FORWARD,
+        CAMERA_BACKWARD,
         FORWARD,
         BACKWARD,
+        CAMERA_UP,
+        CAMERA_DOWN,
         UP,
         DOWN,
         LEFT,
         RIGHT
     };
 
-    float speed = 4.5f;
+    enum Rotation {
+        POSITIVE_PITCH,
+        NEGATIVE_PITCH,
+        POSITIVE_ROLL,
+        NEGATIVE_ROLL,
+        POSITIVE_YAW,
+        NEGATIVE_YAW
+    };
+
+    enum Orbitation {
+        ORBIT_UP,
+        ORBIT_DOWN,
+        ORBIT_LEFT,
+        ORBIT_RIGHT
+    };
+
+    float translation_speed = 4.5f;
+    float rotation_speed = 5.0f;
+    float orbit_speed = 24.0f;
+
+    float distance_to_target = 0.0f; //up-to-date distance to the target (for quicker camera navigation calculations)
 
     const float FOV = 75.0f;
     const float NEAR_PLANE = 0.1f;
@@ -28,9 +52,12 @@ public:
 
     Camera(glm::vec3 _position, glm::vec3 _target, float _viewportWidth = 1280, float _viewportHeight = 720);
 
-    void OneAxisMove(Movement _movement, float _delta);
+    void OneAxisMove(Translation _translation, float _delta);
+    void OneAxisRotate(Rotation _rotation, float _delta);
+    void OneAxisOrbit(Orbitation _orbitation, float _delta);
 
     void SetViewportSize(float _width, float _height);
+    void SetDefaultPositionAndTarget();
 
     [[nodiscard]] glm::vec3 GetPosition() const;
     [[nodiscard]] glm::mat4 GetViewProjection() const;
@@ -40,8 +67,8 @@ private:
     void UpdateView(); //for when the camera's rotation changes
 
 private:
-    glm::vec3 cam_position;
-    glm::vec3 cam_target;
+    glm::vec3 cam_position, default_cam_position;
+    glm::vec3 cam_target, default_cam_target;
 
     glm::vec3 cam_up;
     glm::vec3 cam_right;

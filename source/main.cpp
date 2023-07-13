@@ -3,6 +3,7 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 #include "Components/Renderer.h"
+#include "Utility/Input.hpp"
 
 int main() {
     std::cout << "Starting..." << std::endl;
@@ -52,9 +53,6 @@ int main() {
 
     Renderer main_renderer = Renderer(INITIAL_WIDTH, INITIAL_HEIGHT);
 
-    //unused because it doesn't provide smooth movement
-    //glfwSetKeyCallback(window, Renderer::KeyCallback);
-
     int display_w, display_h, previous_display_w, previous_display_h;
     double previous_time = glfwGetTime();
 
@@ -71,13 +69,16 @@ int main() {
             main_renderer.ResizeCallback(window, display_w, display_h);
         }
 
+        //watch for input events
+        glfwPollEvents();
+
+        //collect and process application specific input
+        Input::InputPoll(window);
+
         main_renderer.Render(window, glfwGetTime() - previous_time);
 
         //stores current time for next frame
         previous_time = glfwGetTime();
-
-        //watch for input events
-        glfwPollEvents();
 
         //swap buffers and prepare for next frame
         glfwSwapBuffers(window);
