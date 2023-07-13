@@ -21,6 +21,11 @@ private:
 
     std::vector<VisualCube> racket_cubes;
 
+    int racket_render_mode = GL_TRIANGLES;
+    glm::vec3 racket_position;
+    glm::vec3 racket_rotation;
+    glm::vec3 racket_scale;
+
 public:
     Renderer(int _initialWidth, int _initialHeight);
 

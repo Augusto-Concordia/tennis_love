@@ -51,6 +51,8 @@ int main() {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+    glfwSetKeyCallback(window, Input::KeyCallback);
+
     Renderer main_renderer = Renderer(INITIAL_WIDTH, INITIAL_HEIGHT);
 
     int display_w, display_h, previous_display_w, previous_display_h;
@@ -69,13 +71,16 @@ int main() {
             main_renderer.ResizeCallback(window, display_w, display_h);
         }
 
-        //watch for input events
+        main_renderer.Render(window, glfwGetTime() - previous_time);
+
+        //collect and process application specific input, before doing the actual polling
+        Input::PreEventsPoll(window);
+
+        //watch for any events
         glfwPollEvents();
 
-        //collect and process application specific input
-        Input::InputPoll(window);
-
-        main_renderer.Render(window, glfwGetTime() - previous_time);
+        //collect and process application specific input, after doing the actual polling
+        Input::PostEventsPoll(window);
 
         //stores current time for next frame
         previous_time = glfwGetTime();

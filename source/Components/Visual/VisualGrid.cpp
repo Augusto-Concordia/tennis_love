@@ -62,25 +62,30 @@ VisualGrid::VisualGrid(int _width, int _height, float _cellSize, glm::vec3 _posi
     VisualObject::SetupGlBuffersVerticesOnly();
 }
 
-void VisualGrid::Draw(const glm::mat4& viewProjection, const glm::vec3 &_cameraPosition) {
-    //bind the vertex array to draw
-    glBindVertexArray(vertex_array_o);
-
+void VisualGrid::Draw(const glm::mat4& _viewProjection, const glm::vec3 &_cameraPosition, int _renderMode) {
     glm::mat4 model_matrix = glm::mat4(1.0f);
     model_matrix = glm::scale(model_matrix, glm::vec3(cell_size / 2, cell_size / 2, 0.0f));
     model_matrix = Transforms::RotateDegrees(model_matrix, rotation);
     model_matrix = glm::translate(model_matrix, position);
 
+    DrawFromMatrix(_viewProjection, _cameraPosition, model_matrix, _renderMode);
+}
+
+void VisualGrid::DrawFromMatrix(const glm::mat4 &_viewProjection, const glm::vec3 &_cameraPosition,
+                                const glm::mat4 &_transformMatrix, int _renderMode) {
+    //bind the vertex array to draw
+    glBindVertexArray(vertex_array_o);
+
     shader->Use();
-    shader->SetModelMatrix(model_matrix);
-    shader->SetViewProjectionMatrix(viewProjection);
+    shader->SetModelMatrix(_transformMatrix);
+    shader->SetViewProjectionMatrix(_viewProjection);
 
     shader->SetVec3("u_color", shader_descriptor.color.x, shader_descriptor.color.y, shader_descriptor.color.z);
     shader->SetFloat("u_alpha", shader_descriptor.alpha);
 
-    //sets grid's lines thickness
     glLineWidth(shader_descriptor.line_thickness);
+    glPointSize(shader_descriptor.point_size);
 
     //draw vertices according to their indices
-    glDrawElements(GL_LINES, indices.size(), GL_UNSIGNED_INT, nullptr);
+    glDrawElements(_renderMode, indices.size(), GL_UNSIGNED_INT, nullptr);
 }

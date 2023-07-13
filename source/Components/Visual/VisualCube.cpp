@@ -74,30 +74,16 @@ VisualCube::VisualCube(glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scal
     VisualObject::SetupGlBuffersVerticesAndNormalsOnlyNoIndices();
 }
 
-void VisualCube::Draw(const glm::mat4& _viewProjection, const glm::vec3 &_cameraPosition) {
-    //bind the vertex array to draw
-    glBindVertexArray(vertex_array_o);
-
+void VisualCube::Draw(const glm::mat4& _viewProjection, const glm::vec3 &_cameraPosition, int _renderMode) {
     glm::mat4 model_matrix = glm::mat4(1.0f);
     model_matrix = glm::translate(model_matrix, position);
     model_matrix = Transforms::RotateDegrees(model_matrix, rotation);
     model_matrix = glm::scale(model_matrix, scale);
 
-    shader->Use();
-    shader->SetModelMatrix(model_matrix);
-    shader->SetViewProjectionMatrix(_viewProjection);
-
-    shader->SetVec3("u_light_pos", 7.5f, -3.2f, 9.0f);
-    shader->SetVec3("u_light_color", 0.76f, 0.23f, 0.36f);
-    shader->SetVec3("u_cam_pos", _cameraPosition.x, _cameraPosition.y, _cameraPosition.z);
-    shader->SetVec3("u_color", shader_descriptor.color.r, shader_descriptor.color.g, shader_descriptor.color.b);
-    shader->SetFloat("u_alpha", shader_descriptor.alpha);
-
-    //draw vertices according to their indices
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+    DrawFromMatrix(_viewProjection, _cameraPosition, model_matrix, _renderMode);
 }
 
-void VisualCube::DrawFromMatrix(const glm::mat4 &_viewProjection, const glm::vec3 &_cameraPosition, glm::mat4 &_transformMatrix) {
+void VisualCube::DrawFromMatrix(const glm::mat4 &_viewProjection, const glm::vec3 &_cameraPosition, const glm::mat4 &_transformMatrix, int _renderMode) {
     //bind the vertex array to draw
     glBindVertexArray(vertex_array_o);
 
@@ -117,6 +103,9 @@ void VisualCube::DrawFromMatrix(const glm::mat4 &_viewProjection, const glm::vec
     shader->SetFloat("u_specular_strength", shader_descriptor.specular_strength);
     shader->SetInt("u_shininess", shader_descriptor.shininess);
 
+    glLineWidth(shader_descriptor.line_thickness);
+    glPointSize(shader_descriptor.point_size);
+
     //draw vertices according to their indices
-    glDrawArrays(GL_TRIANGLES, 0, vertices.size());
+    glDrawArrays(_renderMode, 0, vertices.size());
 }

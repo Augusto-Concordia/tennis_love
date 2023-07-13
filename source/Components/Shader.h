@@ -37,6 +37,7 @@ public:
         const char* fragment_shader_path = "shaders/default.frag";
 
         float line_thickness = 1.0f;
+        float point_size = 1.0f;
 
         glm::vec3 color = glm::vec3(1.0f);
         float alpha = 1.0f;
