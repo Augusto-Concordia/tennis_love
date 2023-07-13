@@ -15,8 +15,8 @@ class Shader {
 public:
     class Library {
     private:
-        static std::unordered_map<const char*, uint32_t> shader_library;
-        static std::unordered_map<const char*, std::shared_ptr<Shader>> compiled_shader_library;
+        inline static std::unordered_map<const char*, uint32_t> shader_library;
+        inline static std::unordered_map<const char*, std::shared_ptr<Shader>> compiled_shader_library;
 
     public:
         Library();

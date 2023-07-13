@@ -1,8 +1,5 @@
 #include "Shader.h"
 
-std::unordered_map<const char *, uint32_t> Shader::Library::shader_library;
-std::unordered_map<const char *, std::shared_ptr<Shader>> Shader::Library::compiled_shader_library;
-
 Shader::Shader(uint32_t _vertexShaderId, uint32_t _fragmentShaderId, uint32_t _programId) {
     vertex_shader_id = _vertexShaderId;
     fragment_shader_id = _fragmentShaderId;

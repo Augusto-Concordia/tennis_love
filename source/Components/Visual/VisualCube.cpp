@@ -1,7 +1,7 @@
 #include "VisualCube.h"
 #include "Utility/Transform.hpp"
 
-VisualCube::VisualCube(glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scale, glm::vec3 _transformOffset, float _lineThickness, glm::vec3 _color, float _alpha) : VisualObject("shaders/cube/cube.vert", "shaders/cube/cube.frag", _position, _rotation, _scale, _lineThickness, _color, _alpha) {
+VisualCube::VisualCube(glm::vec3 _position, glm::vec3 _rotation, glm::vec3 _scale, glm::vec3 _transformOffset, float _lineThickness, glm::vec3 _color, float _alpha) : VisualObject("shaders/cube/lit.vert", "shaders/cube/lit.frag", _position, _rotation, _scale, _lineThickness, _color, _alpha) {
     //vertices with their normals
     vertices = {
             //top face, top triangle
