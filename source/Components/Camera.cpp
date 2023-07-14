@@ -59,12 +59,18 @@ void Camera::OneAxisMove(Camera::Translation _translation, float _delta) {
             break;
     }
 
-    cam_target += delta_target;
-    cam_position += delta_cam;
-
-    //if we changed the distance between the camera and the target, recalculate it
+    //if we changed the distance between the camera and the target, recalculate it and apply camera constraints
     if (delta_target != delta_cam)
-        distance_to_target = glm::length(cam_position - cam_target);
+    {
+        distance_to_target = glm::clamp(glm::length(cam_position + delta_cam - cam_target), 0.5f, std::numeric_limits<float>::infinity());
+        cam_position = cam_forward * distance_to_target;
+    }
+    //otherwise, move the target and camera accordingly
+    else
+    {
+        cam_target += delta_target;
+        cam_position += delta_cam;
+    }
 
     UpdateView();
 }
@@ -159,7 +165,8 @@ glm::mat4 Camera::GetViewProjection() const {
 }
 
 void Camera::UpdateView() {
-    cam_forward = glm::normalize(cam_position - cam_target);
+    //cheap, but effective way of constraining the camera to avoid looking straight up or down
+    cam_forward = glm::clamp(glm::normalize(cam_position - cam_target), -glm::vec3(0.94f), glm::vec3(0.94f));
     cam_right = glm::normalize(glm::cross(cam_forward, Transforms::UP));
     cam_up = glm::normalize(glm::cross(cam_right, cam_forward));
 

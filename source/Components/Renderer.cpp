@@ -71,7 +71,7 @@ Renderer::Renderer(int _initialWidth, int _initialHeight) {
             .color = glm::vec3(0.58f, 0.38f, 0.24f),
             .light_position = main_light_position,
             .light_color = main_light_color,
-            .shininess = 0,
+            .shininess = 2,
     };
     racket_cubes[0] = VisualCube(current_position, current_rotation, current_scale, transform_offset, skin_s_descriptor); //skin
 
