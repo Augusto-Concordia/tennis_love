@@ -283,6 +283,15 @@ void Renderer::Render(GLFWwindow* _window, const double _deltaTime) {
     world_transform_matrix = glm::scale(world_transform_matrix, glm::vec3(0.5f, 0.5f, 2.0f));
     racket_cubes[2].DrawFromMatrix(main_camera->GetViewProjection(), main_camera->GetPosition(), world_transform_matrix, racket_render_mode);
     world_transform_matrix = glm::scale(world_transform_matrix, glm::vec3(2.0f, 2.0f, 0.5f));
+
+    //ball
+    //first transformed to be more or less in the corner of the net
+    world_transform_matrix = glm::translate(world_transform_matrix, glm::vec3(0.0f, -horizontal_bottom_scale.z / 6.0f, horizontal_bottom_scale.z / 4.0f));
+    world_transform_matrix = glm::translate(world_transform_matrix, glm::vec3(-25.0f * glm::pow(glm::cos(glfwGetTime()), 2) + 26.5f, 3.0f, -1.5f));
+    world_transform_matrix = Transforms::RotateDegrees(world_transform_matrix, glm::vec3((float)glm::cos(glfwGetTime()) * 360.0f));
+    world_transform_matrix = glm::scale(world_transform_matrix, glm::vec3(1.0f));
+    racket_cubes[3].DrawFromMatrix(main_camera->GetViewProjection(), main_camera->GetPosition(), world_transform_matrix, racket_render_mode);
+    world_transform_matrix = glm::scale(world_transform_matrix, 1.0f / glm::vec3(1.0f));
 }
 
 void Renderer::ResizeCallback(GLFWwindow* _window, int _displayWidth, int _displayHeight) {
