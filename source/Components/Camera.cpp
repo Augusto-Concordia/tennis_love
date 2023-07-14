@@ -63,7 +63,7 @@ void Camera::OneAxisMove(Camera::Translation _translation, float _delta) {
     if (delta_target != delta_cam)
     {
         distance_to_target = glm::clamp(glm::length(cam_position + delta_cam - cam_target), 0.5f, std::numeric_limits<float>::infinity());
-        cam_position = cam_forward * distance_to_target;
+        cam_position = cam_target + cam_forward * distance_to_target;
     }
     //otherwise, move the target and camera accordingly
     else
