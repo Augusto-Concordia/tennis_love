@@ -129,10 +129,7 @@ void Camera::OneAxisOrbit(Camera::Orbitation _orbitation, float _delta) {
     }
 
     glm::mat4 rotation_matrix = glm::mat4(1);
-    //todo: explain to myself why this doesn't work
-    //rotation_matrix = glm::translate(rotation_matrix, cam_target - cam_position);
     rotation_matrix = glm::rotate(rotation_matrix, glm::radians(_delta * orbit_speed), rotation_axis);
-    //rotation_matrix = glm::translate(rotation_matrix, cam_position - cam_target);
 
     cam_forward = glm::vec3(rotation_matrix * glm::vec4(cam_forward, 1.0));
     cam_position = cam_target + cam_forward * distance_to_target;

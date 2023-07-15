@@ -343,13 +343,13 @@ void Renderer::InputCallback(GLFWwindow* _window, const double _deltaTime) {
         racket_scale += glm::vec3(-1.0f) * (float)_deltaTime;
 
     //camera translates (side to side and zoom forwards & back)
-    if (Input::IsKeyPressed(_window, GLFW_KEY_KP_7) || Input::IsKeyPressed(_window, GLFW_KEY_Y))
+    if (Input::IsKeyPressed(_window, GLFW_KEY_KP_7)/* || Input::IsKeyPressed(_window, GLFW_KEY_Y)*/)
         main_camera->OneAxisMove(Camera::Translation::UP, (float)_deltaTime);
-    if (Input::IsKeyPressed(_window, GLFW_KEY_KP_9) || Input::IsKeyPressed(_window, GLFW_KEY_I))
+    if (Input::IsKeyPressed(_window, GLFW_KEY_KP_9)/* || Input::IsKeyPressed(_window, GLFW_KEY_I)*/)
         main_camera->OneAxisMove(Camera::Translation::DOWN, (float)_deltaTime);
-    if (Input::IsKeyPressed(_window, GLFW_KEY_KP_4) || Input::IsKeyPressed(_window, GLFW_KEY_H))
+    if (Input::IsKeyPressed(_window, GLFW_KEY_KP_4)/* || Input::IsKeyPressed(_window, GLFW_KEY_H)*/)
         main_camera->OneAxisMove(Camera::Translation::LEFT, (float)_deltaTime);
-    if (Input::IsKeyPressed(_window, GLFW_KEY_KP_6) || Input::IsKeyPressed(_window, GLFW_KEY_K))
+    if (Input::IsKeyPressed(_window, GLFW_KEY_KP_6)/* || Input::IsKeyPressed(_window, GLFW_KEY_K)*/)
         main_camera->OneAxisMove(Camera::Translation::RIGHT, (float)_deltaTime);
     if (Input::IsKeyPressed(_window, GLFW_KEY_KP_8) /*|| Input::IsKeyPressed(_window, GLFW_KEY_U)*/)
         main_camera->OneAxisMove(Camera::Translation::FORWARD, (float)_deltaTime);
