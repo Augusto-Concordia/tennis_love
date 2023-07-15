@@ -28,14 +28,20 @@ Similar to the above instructions, with the key difference being to clone the re
 * `Tab`: Resets the model's position & rotation
 * `Space`: Randomizes model's position on the grid
 
+<br/>
+
 * `U`: Scale model up
 * `J`: Scale model down
+
+<br/>
 
 _The following controls' direction were decided relative to the default camera's position, because it was assumed that the user wouldn't orbit the camera much._
 * `W`: Move model forward (along the X axis)
 * `A`: Move model left (along the Y axis)
 * `S`: Move model backward (along the X axis)
 * `D`: Move model right (along the Y axis)
+
+<br/>
 
 * `q`: Rotate model forward (around the X axis)
 * `e`: Rotate model backward (around the X axis)
@@ -44,11 +50,15 @@ _The following controls' direction were decided relative to the default camera's
 * `a`: Rotate model clockwise (around the Z axis)
 * `d`: Rotate model counter-clockwise (around the Z axis)
 
+<br/>
+
 _The following changes the world orientation (orbits the camera)._
 * `Up Arrow`: Orbit up
 * `Right Arrow`: Orbit right
 * `Down Arrow`: Orbit down
 * `Left Arrow`: Orbit left
+
+<br/>
 
 * `Keypad 7`: Move camera upward (along the Z direction)
 * `Keypad 9`: Move camera downward
@@ -57,9 +67,13 @@ _The following changes the world orientation (orbits the camera)._
 * `Keypad 2`: Move camera backward (along where it's looking)
 * `Keypad 6`: Move camera right
 
+<br/>
+
 * `Right Click` & `Horizontal Mouse`: Pan the camera (rotates it horizontally)
 * `Middle Click` & `Vertical Mouse`: TIlt the camera (rotates it vertically)
 * `Left Click` & `Mouse`: Moves the camera in and out of the scene (along where it's looking)
+
+<br/>
 
 * `P`: Renders the model as points
 * `L`: Renders the model as lines
