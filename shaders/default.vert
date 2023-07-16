@@ -1,6 +1,6 @@
 //default vertex shader
 
-#version 450 core
+#version 410 core
 
 layout (location = 0) in vec3 vPos; //vertex input position
 layout (location = 1) in vec3 vColor; //color input of each vertex

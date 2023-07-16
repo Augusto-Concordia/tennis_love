@@ -1,6 +1,6 @@
 //default grid fragment shader
 
-#version 450 core
+#version 410 core
 
 uniform vec3 u_color; //grid color
 uniform float u_alpha; //grid opacity

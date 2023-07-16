@@ -1,6 +1,6 @@
 //default fragment shader
 
-#version 450 core
+#version 410 core
 
 out vec4 fragColor; //rgba color output
 

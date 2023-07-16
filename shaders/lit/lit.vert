@@ -1,6 +1,6 @@
-//default cube vertex shader
+//default lit vertex shader
 
-#version 450 core
+#version 410 core
 
 uniform mat4 u_model_transform; //model matrix
 uniform mat4 u_view_projection; //view projection matrix

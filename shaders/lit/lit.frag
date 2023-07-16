@@ -1,6 +1,6 @@
-//default cube fragment shader
+//default lit fragment shader
 
-#version 450 core
+#version 410 core
 
 uniform vec3 u_cam_pos; //cam position
 
