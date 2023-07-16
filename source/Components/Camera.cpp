@@ -162,8 +162,10 @@ glm::mat4 Camera::GetViewProjection() const {
 }
 
 void Camera::UpdateView() {
+    float infinity = std::numeric_limits<float>::infinity();
+
     //cheap, but effective way of constraining the camera to avoid looking straight up or down
-    cam_forward = glm::clamp(glm::normalize(cam_position - cam_target), -glm::vec3(0.94f), glm::vec3(0.94f));
+    cam_forward = glm::clamp(glm::normalize(cam_position - cam_target), -glm::vec3(infinity, infinity, 0.94f), glm::vec3(infinity, infinity, 0.94f));
     cam_right = glm::normalize(glm::cross(cam_forward, Transforms::UP));
     cam_up = glm::normalize(glm::cross(cam_right, cam_forward));
 
