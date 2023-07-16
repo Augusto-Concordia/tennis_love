@@ -43,12 +43,13 @@ Renderer::Renderer(int _initialWidth, int _initialHeight) {
             .color = glm::vec3(0.0f, 0.0f, 1.0f)
     };
 
-    main_x_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(5.0f, 0.0f, 0.0f), x_line_s_descriptor);
-    main_y_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(0.0f, 5.0f, 0.0f), y_line_s_descriptor);
-    main_z_line = std::make_unique<VisualLine>(glm::vec3(0.0f), glm::vec3(0.0f, 0.0f, 5.0f), z_line_s_descriptor);
+    //this is a quick way to make the axis lines avoid having depth fighting issues
+    main_x_line = std::make_unique<VisualLine>(glm::vec3(0.01f), glm::vec3(5.01f, 0.01f, 0.01f), x_line_s_descriptor);
+    main_y_line = std::make_unique<VisualLine>(glm::vec3(0.01f), glm::vec3(0.01f, 5.01f, 0.01f), y_line_s_descriptor);
+    main_z_line = std::make_unique<VisualLine>(glm::vec3(0.01f), glm::vec3(0.01f, 0.01f, 5.01f), z_line_s_descriptor);
 
-    //racket and its components
-    auto current_position = glm::vec3(0.0f), current_rotation = glm::vec3(0.0f), current_scale = glm::vec3(1.0f), transform_offset = glm::vec3(0.0f, 0.0f, 0.5f);
+    //cube transform point offset (i.e. to scale it from the bottom-up)
+    auto transform_offset = glm::vec3(0.0f, 0.0f, 0.5f);
 
     //cube instances are grouped by shader, since it's the only thing that differentiates one another
     //(everything else can be individually changed at any time)
@@ -73,7 +74,7 @@ Renderer::Renderer(int _initialWidth, int _initialHeight) {
             .light_color = main_light_color,
             .shininess = 2,
     };
-    racket_cubes[0] = VisualCube(current_position, current_rotation, current_scale, transform_offset, skin_s_descriptor); //skin
+    racket_cubes[0] = VisualCube(racket_position, racket_rotation, racket_scale, transform_offset, skin_s_descriptor); //skin
 
     Shader::Descriptor black_s_descriptor =  {
             .vertex_shader_path = lit_vertex_shader_path,
@@ -85,7 +86,7 @@ Renderer::Renderer(int _initialWidth, int _initialHeight) {
             .light_color = main_light_color,
             .shininess = 64,
     };
-    racket_cubes[1] = VisualCube(current_position, current_rotation, current_scale, transform_offset, black_s_descriptor); //racket handle (black plastic)
+    racket_cubes[1] = VisualCube(racket_position, racket_rotation, racket_scale, transform_offset, black_s_descriptor); //racket handle (black plastic)
 
     Shader::Descriptor blue_s_descriptor =  {
             .vertex_shader_path = lit_vertex_shader_path,
@@ -97,7 +98,7 @@ Renderer::Renderer(int _initialWidth, int _initialHeight) {
             .light_color = main_light_color,
             .shininess = 64,
     };
-    racket_cubes[2] = VisualCube(current_position, current_rotation, current_scale, transform_offset, blue_s_descriptor); //racket piece (blue plastic)
+    racket_cubes[2] = VisualCube(racket_position, racket_rotation, racket_scale, transform_offset, blue_s_descriptor); //racket piece (blue plastic)
 
     Shader::Descriptor green_s_descriptor =  {
             .vertex_shader_path = lit_vertex_shader_path,
@@ -109,7 +110,7 @@ Renderer::Renderer(int _initialWidth, int _initialHeight) {
             .light_color = main_light_color,
             .shininess = 64,
     };
-    racket_cubes[3] = VisualCube(current_position, current_rotation, current_scale, transform_offset, green_s_descriptor); //racket piece (green plastic)
+    racket_cubes[3] = VisualCube(racket_position, racket_rotation, racket_scale, transform_offset, green_s_descriptor); //racket piece (green plastic)
 
     Shader::Descriptor white_s_descriptor =  {
             .vertex_shader_path = lit_vertex_shader_path,
@@ -122,7 +123,7 @@ Renderer::Renderer(int _initialWidth, int _initialHeight) {
             .light_color = main_light_color,
             .shininess = 64,
     };
-    racket_cubes[4] = VisualCube(current_position, current_rotation, current_scale, transform_offset, white_s_descriptor); //racket net (white plastic)
+    racket_cubes[4] = VisualCube(racket_position, racket_rotation, racket_scale, transform_offset, white_s_descriptor); //racket net (white plastic)
 }
 
 void Renderer::Render(GLFWwindow* _window, const double _deltaTime) {
@@ -137,9 +138,6 @@ void Renderer::Render(GLFWwindow* _window, const double _deltaTime) {
 
     //draws the main grid
     main_grid->Draw(main_camera->GetViewProjection(), main_camera->GetPosition());
-
-    //clears the depth buffer to allow the axis and all other objects to always be drawn on top of the grid
-    glClear(GL_DEPTH_BUFFER_BIT);
 
     //draws the coordinate axis
     main_x_line->Draw(main_camera->GetViewProjection(), main_camera->GetPosition());
