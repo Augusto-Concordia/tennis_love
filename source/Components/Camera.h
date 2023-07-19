@@ -1,3 +1,5 @@
+// Lightly inspired from: https://learnopengl.com/Getting-started/Camera
+
 #pragma once
 
 #include <iostream>

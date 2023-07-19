@@ -7,16 +7,22 @@
 
 class VisualObject {
 public:
+    // Transform properties
     glm::vec3 position, rotation, scale;
 
+    // Descriptor for the shader used by this object
     Shader::Descriptor shader_descriptor;
 
 protected:
+    // OpenGL shader
     std::shared_ptr<Shader> shader;
 
+    // Vertices and indices used by this object
+    // May or may not be used, depending on the implementation
     std::vector<float> vertices;
     std::vector<int> indices;
 
+    // OpenGL buffers
     GLuint vertex_array_o;
     GLuint vertex_buffer_o;
     GLuint element_buffer_o;

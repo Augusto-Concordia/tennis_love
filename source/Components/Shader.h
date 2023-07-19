@@ -1,3 +1,5 @@
+// Inspiration for this class and its functionality (shader reading from a text file & library caching) comes from an unreleased personal project
+
 #pragma once
 
 #include "glad/glad.h" // include glad to get all the required OpenGL headers
@@ -31,6 +33,7 @@ public:
         static std::string ReadShaderCode(const char* shaderCodePath);
     };
 
+    // Describes all of a shader's properties (regardless of whether they are used or not)
     struct Descriptor {
     public:
         const char* vertex_shader_path = "shaders/default.vert";

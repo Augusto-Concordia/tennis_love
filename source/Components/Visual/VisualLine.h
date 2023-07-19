@@ -1,3 +1,5 @@
+// For information on how this class (and its parent class) work, see VisualObject.h
+
 #pragma once
 
 #include <memory>

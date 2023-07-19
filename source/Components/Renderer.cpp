@@ -283,7 +283,7 @@ void Renderer::Render(GLFWwindow* _window, const double _deltaTime) {
     world_transform_matrix = glm::scale(world_transform_matrix, glm::vec3(2.0f, 2.0f, 0.5f));
 
     //ball
-    //first transformed to be more or less in the corner of the net
+    //transformed to be more or less in the corner of the net
     world_transform_matrix = glm::translate(world_transform_matrix, glm::vec3(0.0f, -horizontal_bottom_scale.z / 6.0f, horizontal_bottom_scale.z / 4.0f));
     world_transform_matrix = glm::translate(world_transform_matrix, glm::vec3(-25.0f * glm::pow(glm::cos(glfwGetTime()), 2) + 26.5f, 3.0f, -1.5f));
     world_transform_matrix = Transforms::RotateDegrees(world_transform_matrix, glm::vec3((float)glm::cos(glfwGetTime()) * 360.0f));
@@ -316,27 +316,27 @@ void Renderer::InputCallback(GLFWwindow* _window, const double _deltaTime) {
     }
 
     if (Input::IsKeyPressed(_window, GLFW_KEY_W) && Input::IsKeyPressed(_window, GLFW_KEY_LEFT_SHIFT))
-        racket_position += glm::vec3(-1.0f, 0.0f, 0.0f) * (float)_deltaTime;
+        racket_position += glm::vec3(-1.0f, 0.0f, 0.0f) * (float)_deltaTime * 10.0f;
     if (Input::IsKeyPressed(_window, GLFW_KEY_S) && Input::IsKeyPressed(_window, GLFW_KEY_LEFT_SHIFT))
-        racket_position += glm::vec3(1.0f, 0.0f, 0.0f) * (float)_deltaTime;
+        racket_position += glm::vec3(1.0f, 0.0f, 0.0f) * (float)_deltaTime * 10.0f;
     if (Input::IsKeyPressed(_window, GLFW_KEY_A) && Input::IsKeyPressed(_window, GLFW_KEY_LEFT_SHIFT))
-        racket_position += glm::vec3(0.0f, -1.0f, 0.0f) * (float)_deltaTime;
+        racket_position += glm::vec3(0.0f, -1.0f, 0.0f) * (float)_deltaTime * 10.0f;
     if (Input::IsKeyPressed(_window, GLFW_KEY_D) && Input::IsKeyPressed(_window, GLFW_KEY_LEFT_SHIFT))
-        racket_position += glm::vec3(0.0f, 1.0f, 0.0f) * (float)_deltaTime;
+        racket_position += glm::vec3(0.0f, 1.0f, 0.0f) * (float)_deltaTime * 10.0f;
 
     //rotation
     if (Input::IsKeyPressed(_window, GLFW_KEY_Q))
-        racket_rotation += glm::vec3(-5.0f, 0.0f, 0.0f) * (float)_deltaTime;
+        racket_rotation += glm::vec3(-20.0f, 0.0f, 0.0f) * (float)_deltaTime;
     if (Input::IsKeyPressed(_window, GLFW_KEY_E))
-        racket_rotation += glm::vec3(5.0f, 0.0f, 0.0f) * (float)_deltaTime;
+        racket_rotation += glm::vec3(20.0f, 0.0f, 0.0f) * (float)_deltaTime;
     if (Input::IsKeyPressed(_window, GLFW_KEY_W))
-        racket_rotation += glm::vec3(0.0f, 5.0f, 0.0f) * (float)_deltaTime;
+        racket_rotation += glm::vec3(0.0f, 20.0f, 0.0f) * (float)_deltaTime;
     if (Input::IsKeyPressed(_window, GLFW_KEY_S))
-        racket_rotation += glm::vec3(0.0f, -5.0f, 0.0f) * (float)_deltaTime;
+        racket_rotation += glm::vec3(0.0f, -20.0f, 0.0f) * (float)_deltaTime;
     if (Input::IsKeyPressed(_window, GLFW_KEY_A))
-        racket_rotation += glm::vec3(0.0f, 0.0f, 5.0f) * (float)_deltaTime;
+        racket_rotation += glm::vec3(0.0f, 0.0f, 20.0f) * (float)_deltaTime;
     if (Input::IsKeyPressed(_window, GLFW_KEY_D))
-        racket_rotation += glm::vec3(0.0f, 0.0f, -5.0f) * (float)_deltaTime;
+        racket_rotation += glm::vec3(0.0f, 0.0f, -20.0f) * (float)_deltaTime;
 
     //scale
     if (Input::IsKeyPressed(_window, GLFW_KEY_U))

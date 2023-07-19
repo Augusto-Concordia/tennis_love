@@ -1,3 +1,5 @@
+// For information on how this class (and its parent class) work, see VisualObject.h
+
 #pragma once
 
 #include <vector>
@@ -9,6 +11,7 @@
 
 class VisualGrid : public VisualObject{
 public:
+    // Size of each cell
     float cell_size;
     int width, height;
 
