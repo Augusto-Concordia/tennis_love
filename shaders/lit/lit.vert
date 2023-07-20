@@ -14,6 +14,6 @@ out vec3 FragPos;
 void main() {
     gl_Position = u_view_projection * u_model_transform * vec4(vPos, 1.0); //gl_Position is a built-in property of a vertex shader
 
-    Normal = vNormal;
+    Normal = mat3(transpose(inverse(u_model_transform))) * vNormal; //we need to transform the normal with the normal matrix (https://learnopengl.com/Lighting/Basic-Lighting & http://www.lighthouse3d.com/tutorials/glsl-12-tutorial/the-normal-matrix/)
     FragPos = vec3(u_model_transform * vec4(vPos, 1.0));
 }
