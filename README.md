@@ -15,13 +15,15 @@ My first real OpenGL project: the first in many to come :) I'll include some pro
 All depended upon libraries should already be included in the vendor folder.
 
 1. Generate project files with CMake
-2. Run the `tennis_love` project!
+2. Set the working directory to the root of the project
+3. Run the `tennis_love` project!
 
 ### From the git repository
 Similar to the above instructions, with the key difference being to clone the repository with `--recurse-submodules` to include the depended upon libraries.
 
 1. Generate project files with CMake
-2. Run the `tennis_love` project!
+2. Set the working directory to the root of the project
+3. Run the `tennis_love` project!
 
 ## Keybinds
 * `Home`: Resets the camera's position & rotation
