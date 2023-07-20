@@ -43,11 +43,11 @@ void Shader::SetViewProjectionMatrix(const glm::mat4 &_transform) const {
 }
 
 Shader::Library::Library() {
-    Shader::Library::shader_library = std::unordered_map<const char *, uint32_t>();
-    Shader::Library::compiled_shader_library = std::unordered_map<const char *, std::shared_ptr<Shader>>();
+    Shader::Library::shader_library = std::unordered_map<std::string, uint32_t>();
+    Shader::Library::compiled_shader_library = std::unordered_map<std::string, std::shared_ptr<Shader>>();
 }
 
-std::shared_ptr<Shader> Shader::Library::CreateShader(const char* _vertexShaderPath, const char* _fragmentShaderPath) {
+std::shared_ptr<Shader> Shader::Library::CreateShader(const std::string& _vertexShaderPath, const std::string& _fragmentShaderPath) {
     std::string shaderCode;
     uint32_t vertex_id;
     uint32_t fragment_id;
@@ -69,7 +69,7 @@ std::shared_ptr<Shader> Shader::Library::CreateShader(const char* _vertexShaderP
         fragment_id = Shader::Library::AddShader(_fragmentShaderPath, GL_FRAGMENT_SHADER, 1, shaderCode.c_str());
     }
 
-    const char *shader_name = std::to_string(vertex_id).append("-").append(std::to_string(fragment_id)).c_str();
+    auto shader_name = std::to_string(vertex_id).append("-").append(std::to_string(fragment_id));
 
     if (Shader::Library::compiled_shader_library.contains(shader_name)) {
         compiled_shader = Shader::Library::compiled_shader_library[shader_name];
@@ -85,14 +85,14 @@ std::shared_ptr<Shader> Shader::Library::CreateShader(uint32_t _vertexShaderId, 
     auto fragmentShaderIdCString = std::to_string(_fragmentShaderId);
 
     std::shared_ptr<Shader> compiled_shader = AddProgram(
-            std::to_string(_vertexShaderId).append("-").append(std::to_string(_fragmentShaderId)).c_str(), _vertexShaderId,
+            std::to_string(_vertexShaderId).append("-").append(std::to_string(_fragmentShaderId)), _vertexShaderId,
             _fragmentShaderId);
 
     return compiled_shader;
 }
 
 uint32_t
-Shader::Library::AddShader(const char* _name, GLenum _type, GLsizei _count, const char* _code, const GLint* _length) {
+Shader::Library::AddShader(const std::string& _name, GLenum _type, GLsizei _count, const char* _code, const GLint* _length) {
     uint32_t shader_id;
     int success;
     char log[512];
@@ -116,7 +116,7 @@ Shader::Library::AddShader(const char* _name, GLenum _type, GLsizei _count, cons
     return shader_id;
 }
 
-std::shared_ptr<Shader> Shader::Library::AddProgram(const char* _name, uint32_t _vertexId, uint32_t _fragmentId) {
+std::shared_ptr<Shader> Shader::Library::AddProgram(const std::string& _name, uint32_t _vertexId, uint32_t _fragmentId) {
     int program_id;
     int success;
     char log[512];
@@ -142,7 +142,7 @@ std::shared_ptr<Shader> Shader::Library::AddProgram(const char* _name, uint32_t 
     return compiled_shader;
 }
 
-std::string Shader::Library::ReadShaderCode(const char* _shaderCodePath) {
+std::string Shader::Library::ReadShaderCode(const std::string& _shaderCodePath) {
     std::string shaderCodeString; //actual shader code
     std::ifstream shaderFile; //file handler
 

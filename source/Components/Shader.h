@@ -17,20 +17,20 @@ class Shader {
 public:
     class Library {
     private:
-        inline static std::unordered_map<const char*, uint32_t> shader_library;
-        inline static std::unordered_map<const char*, std::shared_ptr<Shader>> compiled_shader_library;
+        inline static std::unordered_map<std::string, uint32_t> shader_library;
+        inline static std::unordered_map<std::string, std::shared_ptr<Shader>> compiled_shader_library;
 
     public:
         Library();
 
-        static std::shared_ptr<Shader> CreateShader(const char* _vertexShaderPath, const char* _fragmentShaderPath);
+        static std::shared_ptr<Shader> CreateShader(const std::string& _vertexShaderPath, const std::string& _fragmentShaderPath);
         static std::shared_ptr<Shader> CreateShader(uint32_t _vertexShaderId, uint32_t _fragmentShaderPath);
 
-        static uint32_t AddShader(const char* _name, GLenum _type, GLsizei _count, const char* _code, const GLint* _length = nullptr);
-        static std::shared_ptr<Shader> AddProgram(const char* _name, uint32_t _vertexId, uint32_t _fragmentId);
+        static uint32_t AddShader(const std::string& _name, GLenum _type, GLsizei _count, const char* _code, const GLint* _length = nullptr);
+        static std::shared_ptr<Shader> AddProgram(const std::string& _name, uint32_t _vertexId, uint32_t _fragmentId);
 
     private:
-        static std::string ReadShaderCode(const char* shaderCodePath);
+        static std::string ReadShaderCode(const std::string& shaderCodePath);
     };
 
     // Describes all of a shader's properties (regardless of whether they are used or not)
@@ -75,4 +75,3 @@ public:
     void SetModelMatrix(const glm::mat4& _transform) const; // utility function to set model matrix
     void SetViewProjectionMatrix(const glm::mat4& _transform) const; // utility function to set projection matrix
 };
-
