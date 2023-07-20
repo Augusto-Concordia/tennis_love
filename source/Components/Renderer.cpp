@@ -16,7 +16,7 @@ Renderer::Renderer(int _initialWidth, int _initialHeight) {
             .fragment_shader_path = "shaders/grid/grid.frag",
             .alpha = 0.4f
     };
-    main_grid = std::make_unique<VisualGrid>(100, 100, 100.0f, glm::vec3(0.0f), glm::vec3(0.0f), grid_s_descriptor);
+    main_grid = std::make_unique<VisualGrid>(100, 100, 1.0f, glm::vec3(0.0f), glm::vec3(0.0f), grid_s_descriptor);
 
     //axis lines
     const char* line_vertex_shader_path = "shaders/line/line.vert";
